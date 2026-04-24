@@ -16,6 +16,7 @@ return new class extends Migration
         $table->string('site');
         $table->string('username');
         $table->string('password');
+        $table->string('image')->nullable(); 
         $table->timestamps();
     });
 }

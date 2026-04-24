@@ -1,0 +1,127 @@
+<style>
+body {
+    display: none;
+}
+</style>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginPage" class="container">
+    <div class="card">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="login()">Login</button>
+
+        <p onclick="showRegister()">Register</p>
+        <p onclick="showForgot()">Forgot Password?</p>
+    </div>
+</div>
+
+<div id="resetPage" class="container" style="display:none;">
+    <div class="card">
+        <h2>Reset Password</h2>
+
+        <input type="email" id="resetEmail" placeholder="Email">
+        <input type="password" id="newPassword" placeholder="New Password">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+
+        <input type="hidden" id="resetToken">
+
+        <button onclick="resetPassword()">Update Password</button>
+
+        <p onclick="showLogin()">Back to Login</p>
+    </div>
+</div>
+<!-- ================= REGISTER ================= -->
+<div id="registerPage" class="container" style="display:none;">
+    <div class="card">
+        <h2>Register</h2>
+        <input type="text" id="regName" placeholder="Full Name">
+        <input type="email" id="regEmail" placeholder="Email">
+        <input type="password" id="regPassword" placeholder="Password">
+        <button onclick="register()">Register</button>
+
+        <p onclick="showLogin()">Back to Login</p>
+    </div>
+</div>
+
+<!-- ================= FORGOT ================= -->
+<div id="forgotPage" class="container" style="display:none;">
+    <div class="card">
+        <h2>Forgot Password</h2>
+        <input type="email" id="forgotEmail" placeholder="Email">
+        <button onclick="forgotPassword()">Send Reset Link</button>
+
+        <p onclick="showLogin()">Back to Login</p>
+    </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard" class="container" style="display:none;">
+
+    <div class="topbar">
+        <h2>Accounts</h2>
+        <div class="actions">
+            <button onclick="showAdd()">+ Add</button>
+            <button onclick="showProfile()">Profile</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <!-- ADD FORM -->
+    <div id="addForm" class="card" style="display:none;">
+        <input type="text" id="accSite" placeholder="Site">
+        <input type="text" id="accUsername" placeholder="Username">
+        <input type="password" id="accPassword" placeholder="Password">
+        <input type="file" id="accImage">
+        <button onclick="saveAccount()">Save</button>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+        <thead>
+            <tr>
+                <th>Site</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="accountTable"></tbody>
+    </table>
+
+</div>
+
+<!-- ================= PROFILE ================= -->
+<div id="profilePage" class="container" style="display:none;">
+
+    <!-- DISPLAY -->
+    <div class="profile-display">
+        <img id="profilePreview" src="" width="100" style="border-radius:50%;">
+        <h3 id="displayName">Name</h3>
+        <p id="displayEmail">Email</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="card">
+        <h2>My Profile</h2>
+
+        <input type="text" id="profileName" placeholder="Enter name">
+        <input type="email" id="profileEmail" placeholder="Enter email">
+        <input type="password" id="profilePassword" placeholder="New password (optional)">
+        <input type="file" id="profileImage">
+
+        <button onclick="updateProfile()">Update</button>
+        <button onclick="backToDashboard()">Back</button>
+    </div>
+
+</div>
+
+<script 
+src="script.js">
+
+</script>
+
+</body>

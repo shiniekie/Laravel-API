@@ -9,42 +9,63 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // REGISTER
-    public function register(Request $request)
-    {
+   public function register(Request $request)
+{
+    try {
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required'
         ]);
-
-        $data['password'] = Hash::make($data['password']);
-
-        $user = User::create($data);
-
+    } catch (\Illuminate\Validation\ValidationException $e) {
         return response()->json([
-        'message' => 'User registered successfully',
-        'user' => $user
-]);
+            'message' => 'Validation error',
+            'errors' => $e->errors()
+        ], 422);
     }
+
+    $data['password'] = Hash::make($data['password']);
+
+    $user = User::create($data);
+
+    // SEND VERIFICATION EMAIL
+    $user->sendEmailVerificationNotification();
+
+    return response()->json([
+        'message' => 'Registered. Please verify your email.'
+    ]);
+}
 
     // LOGIN
-    public function login(Request $request)
-    {
-        $user = User::where('email', $request->email)->first();
+  public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
+    $user = User::where('email', $request->email)->first();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
+    if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json([
-        'message' => 'Login successful',
-        'token' => $token,
-        'user' => $user
-        ]);
+            'message' => 'Invalid credentials'
+        ], 401);
     }
 
+    // BLOCK IF NOT VERIFIED
+    if (!$user->hasVerifiedEmail()) {
+        return response()->json([
+            'message' => 'Please verify your email first.'
+        ], 403);
+    }
+
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    return response()->json([
+        'message' => 'Login successful',
+        'token' => $token
+    ]);
+}
     // LOGOUT
     public function logout(Request $request)
     {
